@@ -4,11 +4,8 @@
 #define MIN_PIN 2
 #define MAX_PIN 13
 
-float map(float x, float in_min, float in_max, float out_min, float out_max) {
-  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-}
-
-int pinStates[MAX_PIN - MIN_PIN + 1] = {
+bool usePresetPinStates = false; //Set this to false if you want to set the pin modes at the start of the programm; set to true to use the states defines in the pinStates array
+int pinStates[MAX_PIN - MIN_PIN + 1] = { //1 means OUTPUT, 0 means INPUT
   1,
   1,
   1,
@@ -23,12 +20,17 @@ int pinStates[MAX_PIN - MIN_PIN + 1] = {
   1
 };
 
-bool usePresetPinStates = true;
+
+
+
+float map(float x, float in_min, float in_max, float out_min, float out_max) {
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
 std::string in;
 
 void setup() {
   Serial.begin(9600);
-  pinMode(2, OUTPUT);
 
   if(usePresetPinStates == false) {
     for(int pin = MIN_PIN; pin < MAX_PIN + 1; pin++) {
